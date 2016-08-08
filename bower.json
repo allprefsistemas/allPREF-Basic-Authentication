@@ -1,0 +1,13 @@
+{
+  "name": "allpref",
+  "authors": [
+    "Guga Zimmermann <gugazimmermann@gmail.com>"
+  ],
+  "description": "authentication using silex, twig and doctrine",
+  "dependencies": {
+    "bootswatch-dist": "superhero",
+    "font-awesome": "fontawesome#^4.6.3",
+    "jquery.uniform": "^3.0.0",
+    "webcamjs": "https://github.com/jhuckaby/webcamjs.git#^1.0.10"
+  }
+}

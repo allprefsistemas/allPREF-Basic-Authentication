@@ -1,0 +1,77 @@
+{% extends "template/base.html.twig" %}
+
+{% block title %}allPREF - Dashboard{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link href="{{ app.url_public }}/css/dashboard.min.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container full infosjs" data-href="{{ app.url_auth }}/" data-publico="{{ app.url_public }}/">
+
+    <div class="page-header">
+        <h3><i class="fa fa-dashboard"></i> Dashboard</h3>
+    </div>
+
+    {% if app.my_session.has('error') %}
+        <div class="alert alert-danger">
+            {{ app.my_session.flash('error') }}
+        </div>
+    {% endif %}
+
+    {% if app.my_session.has('success') %}
+        <div class="alert alert-success">
+            {{ app.my_session.flash('success') }}
+        </div>
+    {% endif %}
+
+    <div class="bs-docs-section clearfix">
+
+        <div class="row">
+
+            <div class="col-sm-10 col-sm-offset-1">
+
+                <h4 class="text-center">User List</h4>
+
+                <table id="userList" class="table table-hover">
+
+                    <thead>
+                    <tr>
+                        <th class="thAvatar"></th>
+                        <th>Name</th>
+                        <th>City</th>
+                        <th>State</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        {% set userAvatar = (user.avatar is not null)
+                        ? app.url_public~'/imgs/avatar/'~user.avatar
+                        : app.url_public~'/imgs/user.png' %}
+
+                    <tr>
+                        <td><img src="{{ userAvatar }}" alt="Avatar" class="img-thumbnail"></td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.city }}</td>
+                        <td>{{ user.state }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scritps %}
+    {{ parent() }}
+    <script src="{{app.url_public}}/js/dashboard.min.js" type="application/javascript"></script>
+{% endblock %}

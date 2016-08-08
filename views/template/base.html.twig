@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+{% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ app.url_public }}/imgs/favicon.ico">
+    <link href="{{ app.url_public }}/components/bootswatch-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ app.url_public }}/components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ app.url_public }}/css/main.min.css" rel="stylesheet" type="text/css">
+{% endblock %}
+</head>
+<body>
+
+{% include 'template/menu.html.twig' %}
+
+{% block content %}{% endblock %}
+
+{% block scritps %}
+<script src="{{app.url_public}}/components/jquery/dist/jquery.min.js" type="application/javascript"></script>
+<script src="{{ app.url_public }}/components/jquery.uniform/dist/js/jquery.uniform.bundled.js"></script>
+<script src="{{app.url_public}}/components/bootswatch-dist/js/bootstrap.js"></script>
+<script src="{{app.url_public}}/js/main.min.js" type="application/javascript"></script>
+{% endblock %}
+</body>
+</html>

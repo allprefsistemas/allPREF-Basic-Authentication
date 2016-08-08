@@ -1,0 +1,235 @@
+{% extends "template/base.html.twig" %}
+
+{% block title %}allPREF - Dashboard{% endblock %}
+
+{% block head %}
+{{ parent() }}
+<link href="{{ app.url_public }}/css/profile.min.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container full infosjs" data-auth="{{ app.url_auth }}/" data-public="{{ app.url_public }}/">
+
+    <div class="page-header">
+        <h3><i class="fa fa-user"></i> Profile</h3>
+    </div>
+
+    {% if app.my_session.has('error') %}
+        <div class="alert alert-danger">
+            {{ app.my_session.flash('error') }}
+        </div>
+    {% endif %}
+
+    {% if app.my_session.has('success') %}
+        <div class="alert alert-success">
+            {{ app.my_session.flash('success') }}
+        </div>
+    {% endif %}
+
+    <div class="bs-docs-section clearfix">
+
+        <div class="row">
+
+            <div class="col-sm-8">
+
+                <div class="well bs-component">
+
+                    <form id="changeDetails" action="{{ app.url_auth }}/config/update/" method="POST" class="form-horizontal">
+
+                        <fieldset>
+
+                            <legend>Details</legend>
+
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input id="inputName" name="inputName" value="{{ currentUser.name }}" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputPhones" class="col-sm-2 control-label">Phones</label>
+                                <div class="col-sm-10">
+                                    <input id="inputPhones" name="inputPhones" value="{{ currentUser.phones }}" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputAddress" class="col-sm-2 control-label">Address</label>
+                                <div class="col-sm-10">
+                                    <input id="inputAddress" name="inputAddress" value="{{ currentUser.address }}" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputNeighborhood" class="col-sm-2 control-label">Neighborhood</label>
+                                <div class="col-sm-10">
+                                    <input id="inputNeighborhood" name="inputNeighborhood" value="{{ currentUser.neighborhood }}" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputCity" class="col-sm-2 control-label">City</label>
+                                <div class="col-sm-10">
+                                    <input id="inputCity" name="inputCity" value="{{ currentUser.city }}" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputState" class="col-sm-2 control-label">State</label>
+                                <div class="col-sm-10">
+                                    <input id="inputState" name="inputState" value="{{ currentUser.state }}" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <input type="hidden" name="_token" value="{{ token }}">
+                                <button type="submit" class="btn btn-default">
+                                    Change Details <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+                        </fieldset>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <div id="avatarDiv" class="well bs-component text-center">
+
+                    <div id="avatarErro" class="alert alert-danger hidden">
+                        An error occurred while sending the photo, try again
+                    </div>
+
+                    {% set profileAvatar = (currentUser.avatar is not null)
+                    ? app.url_public~'/imgs/avatar/'~currentUser.avatar
+                    : app.url_public~'/imgs/user.png' %}
+                    <img id="profileAvatar" src="{{ profileAvatar }}" data-src="{{ profileAvatar }}" alt="Profile Avatar" class="profile-avatar">
+
+                    <div id="avatarHover">
+                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#fileModal">File</button>
+                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#webcamModal">Webcam</button>
+                    </div>
+
+                </div>
+
+                <div id="fileModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </a>
+                                <h4 class="modal-title">Change Avatar</h4>
+                            </div>
+                            <form id="fileForm" action="{{ app.url_auth }}/config/profile/avatar/" method="POST" enctype="multipart/form-data">
+                                <div class="modal-body text-center">
+                                    <div class="form-group">
+                                        <img id="filePreview" class="profile-avatar" src="{{ profileAvatar }}" alt="Profile Avatar">
+                                        <span id="inputFileErr" class="help-block hidden">
+                                            <strong class="text-danger">File not allowed</strong>
+                                        </span>
+                                        <input id="inputFile" name="file" type="file" class="input-sm file-styled uploader-xs">
+                                        <span class="help-block">Formats: png, jpg. Max. size 2Mb</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="col-sm-4 text-left">
+                                        <a class="btn btn-sm btn-default" data-dismiss="modal">Close</a>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <button type="submit" class="btn btn-sm btn-success">Save Photo</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="webcamModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </a>
+                                <h4 class="modal-title">Change Avatar</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                <div id="webcamShow"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-sm-4 text-left">
+                                    <a class="btn btn-sm btn-default" data-dismiss="modal">Close</a>
+                                </div>
+                                <div class="col-sm-8">
+                                    <button id="webcamPreview" class="btn btn-sm btn-warning">Preview</button>
+                                    <button id="webcamCancelPreview" class="btn btn-sm btn-danger">Back</button>
+                                    <button id="webcamSave" class="btn btn-sm btn-success">Save Photo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="well bs-component">
+
+                    <form id="changePasswordForm" action="{{ app.url_auth }}/config/newPassword/" method="POST">
+
+                        <fieldset>
+
+                            <h5 class="text-center">Change Password</h5>
+
+                            <div class="form-group form-group-sm">
+                                <input name="password" id="password" type="password" class="form-control" maxlength="30"
+                                       placeholder="Current Password">
+                            </div>
+
+                            <div class="form-group form-group-sm">
+                                <input name="newPassword" id="newPassword" type="password" class="form-control"
+                                       maxlength="30" placeholder="New Password">
+                            </div>
+
+                            <div class="form-group form-group-sm">
+                                <input name="repeatPassword" id="repeatPassword" type="password" class="form-control"
+                                       maxlength="30" placeholder="Repeat New Password">
+                            </div>
+
+                            <div class="text-right">
+                                <input type="hidden" name="_token" value="{{ token }}">
+                                <button type="submit" class="btn btn-sm btn-default">
+                                    Change Password <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+                        </fieldset>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scritps %}
+{{ parent() }}
+<script src="{{ app.url_public }}/components/webcamjs/webcam.min.js"></script>
+<script src="{{ app.url_public }}/js/config.min.js"></script>
+{% endblock %}

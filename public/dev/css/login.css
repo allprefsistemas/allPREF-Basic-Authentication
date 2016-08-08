@@ -1,0 +1,38 @@
+.form-signin {
+    width: 320px;
+    margin: 20% auto 0;
+}
+
+.form-signin .logo {
+    width: 320px;
+    text-align: center;
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.form-signin .logo img {
+    max-width: 160px;
+    height: auto;
+}
+
+.form-signin .allpref {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #7698A9;
+}
+
+.form-control:-moz-placeholder {
+    color: #7698A9;
+}
+
+.form-control::-moz-placeholder {
+    color: #7698A9;
+}
+
+.form-control:-ms-input-placeholder {
+    color: #7698A9;
+}
